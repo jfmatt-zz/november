@@ -4,14 +4,6 @@
 // http://pragprog.com/titles/tpdsl/source_code
 grammar NestedNameList;
 
-@header {
-    package edu.american.november;
-}
-
-@lexer::header {
-	package edu.american.november;
-}
-
 list : '[' elements ']' ; // match bracketed list
 elements : element (',' element)* ; // match comma-separated list 
 element : NAME | list ; // element is name or nested list 

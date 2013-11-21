@@ -6,10 +6,10 @@
 	<artifactId>november</artifactId>
 	<version>0.0.1</version>
 
-	<name>ANTLR3 project: edu.american.november</name>
+	<name>November</name>
 
 	<properties>
-		<antlr.version>3.4</antlr.version>
+		<antlr.version>4.1</antlr.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
@@ -26,12 +26,12 @@
 			</plugin>
 			<plugin>
 				<groupId>org.antlr</groupId>
-				<artifactId>antlr3-maven-plugin</artifactId>
+				<artifactId>antlr4-maven-plugin</artifactId>
 				<version>${antlr.version}</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>antlr</goal>
+							<goal>antlr4</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -97,13 +97,13 @@
 									<pluginExecutionFilter>
 										<groupId>org.antlr</groupId>
 										<artifactId>
-											antlr3-maven-plugin
+											antlr4-maven-plugin
 										</artifactId>
 										<versionRange>
-											[3.4,)
+											[4.0,)
 										</versionRange>
 										<goals>
-											<goal>antlr</goal>
+											<goal>antlr4</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
@@ -123,7 +123,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.antlr</groupId>
-			<artifactId>antlr-runtime</artifactId>
+			<artifactId>antlr4-runtime</artifactId>
 			<version>${antlr.version}</version>
 		</dependency>
 	</dependencies>
@@ -152,8 +152,8 @@
 								</goals>
 								<configuration>
 									<sources>
-										<source>src/main/antlr3</source>
-										<source>${project.build.directory}/generated-sources/antlr3</source>
+										<source>src/main/antlr4</source>
+										<source>${project.build.directory}/generated-sources/antlr4</source>
 									</sources>
 								</configuration>
 							</execution>
