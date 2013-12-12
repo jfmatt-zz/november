@@ -1,9 +1,7 @@
 package edu.american.november;
 
-import org.antlr.v4.runtime.ANTLRFileStream;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.*;
 
 public class Main {
 	private static final String TEST_FILE = "lists.test";
@@ -12,19 +10,19 @@ public class Main {
 		try {
 			CharStream stream = null;
 			if (args.length > 0) {
-				stream = new ANTLRFileStream(args[0]);
+				stream = new ANTLRNoCaseFileStream(args[0]);
 			} else {
-				stream = new ANTLRInputStream(Main.class.getClassLoader().getResourceAsStream(TEST_FILE));
+				stream = new ANTLRNoCaseInputStream(Main.class.getClassLoader().getResourceAsStream(TEST_FILE));
 			}
-			NestedNameListLexer lexer = new NestedNameListLexer(stream);
+			AsmLexer lexer = new AsmLexer(stream);
 			CommonTokenStream tokens = new CommonTokenStream(lexer);
-			NestedNameListParser parser = new NestedNameListParser(tokens);
+			AsmParser parser = new AsmParser(tokens);
 
 			String sourceName = parser.getSourceName() == null? TEST_FILE : parser.getSourceName();
 			
 			System.out.println("Parsing: " + sourceName);
 
-			parser.elements();
+			System.out.println(parser.program().toStringTree(parser));
 			
 			System.out.println("done");
 		} catch (Exception ex) {
