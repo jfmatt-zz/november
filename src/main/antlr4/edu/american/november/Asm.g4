@@ -1,6 +1,6 @@
 grammar Asm;
 
-program: statement+ ;
+init: statement+ ;
          
 statement
     : label
