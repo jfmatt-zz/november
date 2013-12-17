@@ -8,14 +8,17 @@ import java.io.PipedOutputStream;
 import java.io.PrintWriter;
 
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 public abstract class CompileStep {
-	OutputStream os;
-	CharStream is;
-	TokenStream tokens;
+	private OutputStream os;
+	protected CharStream is;
+	protected TokenStream tokens;
 
-	Parser parser;
-	Lexer lexer;
+	protected Parser parser;
+	protected Lexer lexer;
+	
+	protected ParseTreeListener listener;
 	
 	public CompileStep(InputStream i, OutputStream o) {
 		this.setInputStream(i);
@@ -31,14 +34,14 @@ public abstract class CompileStep {
 		
 	public void execute() {
 
-		PrintWriter out = new PrintWriter(this.os, true);		
+		PrintWriter out = new PrintWriter(this.getOutputStream(), true);		
 		RuleContext result;
 
 		try {
 			result = this.doParse();
 		
-			out.println(result.toStringTree(parser));
-			out.println("done");
+//			out.println(result.toStringTree(parser));
+//			out.println("done");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -55,6 +58,7 @@ public abstract class CompileStep {
 	
 	public void setInputStream(CharStream i) {
 		try {
+			//Initialize or reset everything
 			this.is = i;
 			
 			if (this.lexer == null)
@@ -63,12 +67,18 @@ public abstract class CompileStep {
 				this.lexer.setInputStream(this.is);
 			
 			this.tokens = new CommonTokenStream(this.lexer);
-			
-			if (this.parser == null)
-				this.parser = this.buildParser(this.tokens);
-			else
-				this.parser.setTokenStream(this.tokens);
 
+			this.listener = this.buildListener();
+			
+			if (this.parser == null) {
+				this.parser = this.buildParser(this.tokens);
+				this.parser.addParseListener(this.listener);
+			}
+			else {
+				this.parser.setTokenStream(this.tokens);
+			}
+
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -100,8 +110,9 @@ public abstract class CompileStep {
 		}
 	}
 	
-	abstract RuleContext doParse();
-	abstract Lexer buildLexer(CharStream is);
-	abstract Parser buildParser(TokenStream tokens);
+	protected abstract RuleContext doParse();
+	protected abstract Lexer buildLexer(CharStream is);
+	protected abstract Parser buildParser(TokenStream tokens);
+	protected abstract ParseTreeListener buildListener();
 	
 }

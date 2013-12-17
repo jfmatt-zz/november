@@ -3,6 +3,8 @@ package edu.american.november;
 import java.io.FileInputStream;
 import java.io.InputStream;
 
+import edu.american.november.Assembler.Assembler;
+
 public class Main {
 	private static final String TEST_FILE = "lists.test";
 
@@ -25,8 +27,8 @@ public class Main {
 			System.out.println("Parsing: " + sourceName);
 			
 			//Pass to compiler
-			compiler = new AssembleStep(stream);
-			compiler.setOutputStream(System.out);
+			compiler = new Assembler(stream);
+			compiler.setOutputStream(new HexPrinterStream());
 			compiler.execute();
 			
 		} catch (Exception ex) {
